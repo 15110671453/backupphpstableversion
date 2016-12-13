@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PHP for OS X / macOS as binary package</title>
+<style>
+body {
+max-width: 640px;
+margin: 0;
+}
+
+h1 {
+background-color: #39271c;
+color: #fff;
+font-weight: normal;
+padding: 50px 30px 15px 15px;
+margin: 0;
+border-left:  4px solid #00c4e4;
+}
+
+section {
+padding: 20px 19px;
+}
+
+p {
+line-height: 1.4em;
+}
+
+a {
+color: #009bb4;
+}
+
+a:visited {
+color: #6b8589;
+}
+
+pre {
+border: dotted black 1px ;
+padding: 0.8em;
+overflow: scroll;
+}
+
+.logos a {
+    display: inline-block;
+    margin: 5px 40px 5px 0;
+}
+
+@media only screen and (min-width : 992px) {
+    .twitter {
+        position: absolute;
+        top: 195px;
+        left: 660px;
+    }
+}
+</style>
+<script>
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-424540-8']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</head>
+<body>
+
+<h1> PHP <span title="5.3 / 5.4 / 5.5 / 5.6 / 7.0 / 7.1">5.3 to 7.1</span> for OS X / macOS <span title="10.6 / 10.7 / 10.8 / 10.9 / 10.10 / 10.11 / 10.12">10.6 to 10.12</span><br/> as binary package</h1>
+
+<section>
+
+<a href="#install">Installation</a> |
+<a href="#faq">FAQ</a> |
+<a href="#notes">Additional important notes</a> |
+
+<a href="#alt_installation">(Alternative) Installation by "hand" </a> |
+<!--<a href="#beta_installation">Beta </a> |-->
+<a href="#ext">Included extensions</a> |
+<a href="#uninstall">Uninstall</a> |
+
+<a href="#source">Source code</a> |
+<a href="#thanks">Thanks</a> |
+<a href="#support">Support</a> |
+<a href="#latest">Latest releases</a>
+
+<h2>Intro</h2>
+<p>This package installs the (usually) latest PHP 7.1/7.0/5.6/5.5/5.4/5.3  on OS X 10.6 (aka Snow Leopard),
+OS X 10.7 (aka Lion)
+and OS X 10.8 (aka Mountain Lion)
+and OS X 10.9 (aka Mavericks)
+and OS X 10.10 (aka Yosemite)
+and OS X 10.11 (aka El Capitan)
+and macOS 10.12 (aka Sierra)
+in /usr/local/php5. It installs many useful extensions (see below) and ini-settings and is what we at <a href="http://www.liip.ch">Liip
+</a> use for our development. It's especially suited for Symfony 2 development.
+
+It also provides a decent php.ini with all settings configured according to "Best Practices".
+
+</p>
+<p>It doesn't install Apache, MySQL or any other external programs. It uses the Apache installation, which comes with OS X and for installing MySQL you can for example use
+<a href="http://mxcl.github.com/homebrew/">Homebrew</a>. The package is based on <a href="http://www.entropy.ch/software/macosx/php/">entropy's php package
+</a>.
+</p>
+
+<h2 id="install">
+One Line Installation
+</h2>
+<p>All you need to do to install the whole thing is opening up a Shell and execute the following line:
+</p>
+<h3>PHP 7.1 (Current stable)</h3>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s 7.1
+</pre>
+<h3>PHP 7.0 (Old stable)</h3>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s 7.0
+</pre>
+<h3>PHP 5.6 (Old stable)</h3>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s 5.6
+</pre>
+<h3>PHP 5.5 (End of life)</h3>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s 5.5
+</pre>
+<h3>PHP 5.4 (End of life)</h3>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s 5.4
+</pre>
+<h3>PHP 5.3 (End of life)</h3>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s 5.3
+</pre>
+<p>
+It will ask you for your password. We install the packager in /usr/local/packer and PHP into
+/usr/local/php5 and for this, we need your password. We don't do anything bad with it.
+
+</p>
+
+
+<h2 id="faq">Frequently Asked Questions</h2>
+
+<h3>Why does php -v on the command line still show my old version?</h3>
+<p>php-osx doesn't overwrite the php binaries installed by Apple, but installs everything in /usr/local/php5.
+The new php binary is therefore in /usr/local/php5/bin/php.</p>
+
+<p>You can also adjust your PATH do include that directory, eg. write into your ~/.profile file the following
+<pre>
+export PATH=/usr/local/php5/bin:$PATH
+</pre>
+</p>
+<h3> Why is Europe/Zurich the default timezone? Where to change that?</h3>
+
+<p>Because we are based in Zurich (and Fribourg and Lausanne). Change the file in <tt>/usr/local/php5/php.d/99-liip-developer.ini</tt> to adjust that.</p>
+
+
+<h3>It doesn't take my php.ini values</h3>
+
+<p>We introduced our own ini file to be able to easily overwrite the standard values with our recommended values. You can find it in <tt>/usr/local/php5/php.d/99-liip-developer.ini </tt>
+</p>
+<p>As this is read last, it will overwrite values defined in other files. You can also just delete the file.</p>
+
+<h3>Why is the MySQL Socket configured to use /tmp/mysql.sock and how to change that?</h3>
+
+<p>If you download the native binary from mysql.com, that server uses /tmp/mysql.sock as its socket location (see <a href="http://dev.mysql.com/doc/refman/5.5/en/macosx-installation-pkg.html">this</a>). Therefore we choose that value as default.</p>
+<p>You can change that value in <tt>/usr/local/php5/php.d/99-liip-developer.ini </tt></p>
+
+<h3>How to install pecl extensions?</h3>
+
+<pre>
+sudo /usr/local/php5/bin/pecl install pecl_http
+</pre>
+
+<h3>Where is the memcached daemon?</h3>
+
+<p>We started not including the memcached daemon anymore. But you can install it by hand with</p>
+<pre>
+ sudo /usr/local/packager/packager.py install tools-memcached
+</pre>
+
+<h3>How can I help?</h3>
+
+<p>This project is hosted on github here <a href="https://github.com/liip/build-entropy-php/">https://github.com/liip/build-entropy-php/</a>. The website itself and install.sh
+is hosted on <a href="https://github.com/liip/php-osx/">https://github.com/liip/php-osx/</a>.
+It's all Open Source, so feel free to fork it and send Pull Requests, if you want to change/fix something.</p>
+
+<h3> I have more questions. Where to put them?</h3>
+
+<p>You have basically three options:
+<ul>
+<li>Open a ticket at <a href="https://github.com/liip/php-osx/issues">https://github.com/liip/php-osx/issues</a></li>
+<li>Write a tweet, we monitor that and are reachable at <a href="http://twitter.com/php_osx">@php_osx</a></li>
+<li>Write on Stack Overflow with the tags "<a href="http://stackoverflow.com/questions/tagged/php+osx">php osx</a>". We do monitor that, as well</a></li>
+</ul>
+
+<h2 id="notes">Additional important notes</h2>
+
+<h3>32 bit only systems (no workie)</h3>
+<p>
+It only works on a 64-bit-capable system. This means not on very old hardware with Intel Core Duo and Intel Core Solo processors (see <a href="http://support.apple.com/kb/ht3696">http://support.apple.com/kb/ht3696</a> for the overview). If anyone wants to make it work on those systems too, please tell us how (We tried, but didn't came up with anything running in a decent amount of time)
+</p>
+
+<h3>php.ini</h3>
+<p>The php.ini is located in /usr/local/php5/lib/php.ini, additional config files are located in /usr/local/php5/php.d/. The php.ini is based on php.ini-development</p>
+
+<h3>Liip php.ini</h3>
+<p>
+The Liip php.ini for development is located in /usr/local/php5/php.d/99-liip-developer.ini.
+</p>
+
+<h3>Re-installs into new directory</h3>
+<p>
+All installed files go in a new directory with every update, you have to manually maintain/merge your changes from the old directory! (like pear installs)
+</p>
+
+<h3>apc, twig  and xslcache</h3>
+<p>
+apc, twig  and xslcache need to be enabled manually in /usr/local/php5/php.d/50-extension-$name.ini.
+</p>
+
+<h3>xdebug</h3>
+<p>xdebug settings needs to be configured (idekey etc) manually in /usr/local/php5/php.d/50-extension-xdebug.ini.
+</p>
+<h3>apache error with ulimit</h3>
+<p>
+If you are seeing "/usr/sbin/apachectl: line 82: ulimit: open files: cannot modify limit: Invalid argument" when loading apache, here is <a href="http://blog.deversus.com/2010/11/mac-os-1065-apachectl-usrsbinapachectl-line-82-ulimit-open-files-cannot-modify-limit-invalid-argument/">a fix</a>
+</p>
+
+
+<h3>More history and all that </h3>
+<p>
+See <a href="http://blog.liip.ch/archive/2011/04/13/php-5-3-for-os-x-10-6-one-line-installer.html">this blog post</a> for even more background info.
+</p>
+
+
+
+
+<h2 id="alt_installation">(Alternative) Installation by "hand" </h2>
+<p>
+If you don't trust us, here's the code of install.sh, which you can run by yourself (instead of the one-liner above):
+
+</p>
+<pre>
+curl -s -o /tmp/packager.tgz https://php-osx.liip.ch/packager/packager.tgz
+sudo tar -C /usr/local  -xzf /tmp/packager.tgz
+sudo /usr/local/packager/packager.py install 5.4-frontenddev
+</pre>
+<p>
+If you already have installed the packager and just want to update the PHP package, you can do it with
+the following line.
+
+</p>
+<pre>
+sudo /usr/local/packager/packager.py install tools-frontenddev
+
+</pre>
+
+<!--
+<h2 id="beta_installation">Beta installation </h2>
+<p>
+We provide also binaries for the upcoming versions, currently PHP 5.4, some extensions are missing, due to incompatibilities. Do the following:
+</p>
+<pre>
+curl -s https://php-osx.liip.ch/install.sh | bash -s beta
+</pre>
+-->
+<h2 id="ext">Included extensions</h2>
+<p>
+bcmath
+bz2
+calendar
+Core
+ctype
+curl
+date
+dom
+dtrace
+ereg
+exif
+fileinfo
+filter
+ftp
+gd
+gettext
+hash
+iconv
+imap
+intl
+json
+ldap
+libxml
+mbstring
+mcrypt
+memcache
+memcached
+mhash
+mongo
+mssql
+mysql
+mysqli
+mysqlnd
+OAuth
+odbc
+openssl
+pcntl
+pcre
+PDO
+pdo_dblib
+pdo_mysql
+pdo_pgsql
+pdo_sqlite
+pgsql
+Phar
+posix
+Reflection
+session
+shmop
+SimpleXML
+soap
+sockets
+solr
+SPL
+SQLite
+sqlite3
+standard
+sysvmsg
+sysvsem
+sysvshm
+tidy
+tokenizer
+wddx
+xdebug
+xhprof
+xml
+xmlreader
+xmlrpc
+xmlwriter
+xsl
+zip
+zlib
+Xdebug
+</p>
+<p>available but disabled by default: apc, xslcache, twig, uploadprogress
+
+</p>
+<p>See <a href="info.html">this output of phpinfo()</a> for more info.</p>
+
+
+
+
+
+<h2 id="uninstall">Uninstall</h2>
+
+<p>Change in /etc/apache2/httpd.conf</p>
+
+<pre><code>LoadModule php5_module /usr/local/php5/libphp5.so
+</code></pre>
+
+<p>to</p>
+
+<pre><code>LoadModule php5_module        libexec/apache2/libphp5.so
+</code></pre>
+
+
+<p> also delete the file <tt>+php-osx.conf</tt> and <tt>+entropy-php.conf</tt> in <tt>/etc/apache2/other</tt>
+<p>and optionally remove /usr/local/php5-*</p>
+
+
+<h2 id="reinstall">Reinstall</h2>
+
+<p>To reinstall an already installed package, it's version has to be removed from the file <tt>/usr/local/packager/registry.log</tt>.</p>
+<pre><code>sudo $EDITOR /usr/local/packager/registry.log</code></pre>
+
+<p>To forget all installed packages simply remove the file: </p>
+<pre><code>sudo rm -rf /usr/local/packager/registry.log</code></pre>
+
+
+<h2 id="source">Source Code
+</h2>
+<ul>
+    <li>
+        <a href="https://github.com/liip/build-entropy-php">build-entropy-php</a>. Needed for generating the PHP binaries and all the needed libraries
+    </li>
+    <li>
+        <a href="https://github.com/liip/packager">packager</a> by local.ch. This downloads and install the package on your computer.
+
+    </li>
+    <li>
+        <a href="https://github.com/liip/php-osx/">php-osx</a>. The scripts needed for doing the package and this webpage
+
+    </li>
+
+</ul>
+
+<h2 id="thanks">Thanks
+</h2>
+<p>
+Thanks to Local.ch, which made all the groundwork for this. And thanks to Liip (and especially <a href="http://www.jezek.ch/">Patrick</a>) for everything else.
+</p>
+
+<p class="logos"><a href="http://www.local.ch/"><img src="local.gif" alt="Local.ch" /></a> <a href="http://www.liip.ch"><img src="liip.png" alt="Liip" /></a></p>
+
+<h2 id="support">Support
+</h2>
+<p>
+We can't provide support for this, but Pull Requests are always welcome. And use the <a href="https://github.com/liip/php-osx/issues">github issues page
+</a> for filing bug reports.
+</p>
+<div class="twitter"><script src="https://widgets.twimg.com/j/2/widget.js"></script>
+<a class="twitter-timeline" href="https://twitter.com/php_osx" data-widget-id="476656214785290240">Tweets by @php_osx</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+
+
+
+
+
+</div>
+<h2 id="latest">Latest releases
+</h2>
+<pre>
